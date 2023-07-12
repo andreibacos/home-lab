@@ -1,0 +1,39 @@
+---
+- name: "Set hostname to {{ hostname }}"
+  ansible.builtin.hostname:
+    name: "{{ hostname }}"
+
+- name: "Set timezone to {{ timezone }}"
+  community.general.timezone:
+    name: "{{ timezone }}"
+
+- name: Update apt-cache
+  ansible.builtin.apt:
+    update_cache: yes
+    cache_valid_time: 3600
+  register: result
+  until: result is succeeded
+
+- name: Upgrade all packages
+  ansible.builtin.apt:
+    upgrade: yes
+    state: latest
+  when: keep_packages_updated
+
+- name: Install some packages
+  ansible.builtin.apt:
+    name: "{{ extra_apt_packages }}"
+    state: present
+  register: result
+  until: result is succeeded
+
+- name: Append bashrc stuff for user {{ username }}
+  ansible.builtin.blockinfile:
+    path: "/home/{{ username }}/.bashrc"
+    block: "{{ bashrc_append }}"
+
+- name: Disable motd
+  ansible.builtin.copy:
+    content: ""
+    dest: "/home/{{ username }}/.hushlogin"
+    force: false

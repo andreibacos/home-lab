@@ -1,0 +1,18 @@
+---
+timezone: Etc/UTC
+hostname: machine
+keep_packages_updated: false
+extra_apt_packages:
+  - htop
+  - unzip
+  - lm-sensors
+
+bashrc_append: |
+  function parse_git_dirty {
+    [[ $(git status 2> /dev/null | tail -n1) != "nothing to commit, working tree clean" ]] && echo "*"
+  }
+  function parse_git_branch {
+    git branch --no-color 2> /dev/null | sed -e '/^[^*]/d' -e "s/* \(.*\)/(\1$(parse_git_dirty))/"
+  }
+  export PS1='\[\e[38;5;41m\]\u\[\e[38;5;202m\]@\[\e[38;5;31m\]\h \[\e[38;5;171m\]\W\[\e[\033[38;5;48m\] $(parse_git_branch)\[\e[\033[00m\]\$ '
+  export LS_COLORS='ow=01;36;40'

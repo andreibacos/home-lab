@@ -1,0 +1,24 @@
+---
+- name: "Create {{ nas_group }} group"
+  ansible.builtin.group:
+    name: "{{ nas_group }}"
+    state: present
+
+- name: Create {{ nas_user }} user
+  ansible.builtin.user:
+    name: "{{ nas_user }}"
+    state: present
+    system: yes
+    update_password: on_create
+    create_home: no
+    group: "{{ nas_group }}"
+    shell: /usr/sbin/nologin
+
+- name: Create folders
+  ansible.builtin.file:
+    path: "{{ item.0 }}/{{ item.1 }}"
+    state: directory
+    owner: "{{ nas_user }}"
+    group: "{{ nas_group }}"
+    mode: "775"
+  loop: "{{ disks | product(data_folders) | list}}"

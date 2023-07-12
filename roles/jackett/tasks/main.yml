@@ -1,0 +1,29 @@
+---
+- name: Create Jackett Directories
+  ansible.builtin.file:
+    path: "{{ item }}"
+    state: directory
+  with_items:
+    - "{{ jackett_data_directory }}"
+
+- name: Jackett Docker Container
+  community.docker.docker_container:
+    name: "{{ jackett_container_name }}"
+    image: "{{ jackett_image_name }}:{{ jackett_image_version }}"
+    volumes:
+      - "{{ jackett_data_directory }}:/config:rw"
+      - "/etc/localtime:/etc/localtime:ro"
+      - "{{ jackett_torrents_root }}:/downloads"
+    ports:
+      - "{{ jackett_port }}:9117"
+    env:
+      TZ: "{{ timezone }}"
+    restart_policy: unless-stopped
+    memory: "{{ jackett_memory }}"
+    labels:
+      traefik.enable: "true"
+      traefik.http.routers.jackett.rule: "Host(`{{ jackett_hostname }}.{{ domain }}`)"
+      traefik.http.routers.jackett.tls.certresolver: "letsencrypt"
+      traefik.http.routers.jackett.tls.domains[0].main: "{{ domain }}"
+      traefik.http.routers.jackett.tls.domains[0].sans: "*.{{ domain }}"
+      traefik.http.services.jackett.loadbalancer.server.port: "9117"

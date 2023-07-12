@@ -1,0 +1,19 @@
+---
+# directories
+sonarr_data_directory: "{{ docker_home }}/sonarr/config"
+
+# uid / gid
+sonarr_user_id: "0"
+sonarr_group_id: "0"
+
+# network
+sonarr_port: "8989"
+sonarr_hostname: "sonarr"
+
+# docker
+sonarr_container_name: "sonarr"
+sonarr_image_name: "linuxserver/sonarr"
+sonarr_image_version: "latest"
+
+# specs
+sonarr_memory: 1g

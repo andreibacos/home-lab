@@ -1,0 +1,58 @@
+---
+- name: NAS
+  hosts: nas
+  roles:
+    - role: general
+      tags:
+        - general
+
+    - role: geerlingguy.docker
+      tags:
+        - docker
+
+    - role: geerlingguy.pip
+      tags:
+        - docker
+
+    - role: nas
+      tags:
+        - nas
+
+    - role: cloudflare_ddns
+      tags:
+        - ddns
+    
+    - role: traefik
+      tags:
+        - traefik
+
+    - role: jellyfin
+      tags:
+        - jellyfin
+
+    - role: sonarr
+      tags:
+        - sonarr
+
+    - role: radarr
+      tags:
+        - radarr
+
+    - role: bazarr
+      tags:
+        - bazarr
+
+    - role: jackett
+      tags:
+        - jackett
+
+    - role: deluge
+      tags:
+        - deluge
+
+  tasks:
+    - name: Include Samba Server role
+      ansible.builtin.include_role:
+        name: vladgh.samba.server
+      tags:
+        - samba

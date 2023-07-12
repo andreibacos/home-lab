@@ -1,0 +1,13 @@
+---
+nas_user: nas
+nas_group: nas
+
+data_folders:
+  - media/tv
+  - media/movies
+  - downloads
+
+disks:
+  - /mnt/disk1
+  - /mnt/disk2
+  - /mnt/disk3

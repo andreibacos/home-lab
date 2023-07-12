@@ -1,0 +1,35 @@
+---
+
+- name: Create Jellyfin Directories
+  ansible.builtin.file:
+    path: "{{ item }}"
+    state: directory
+  with_items:
+    - "{{ jellyfin_config_directory }}"
+
+- name: Jellyfin Docker Container
+  community.docker.docker_container:
+    name: "{{ jellyfin_container_name }}"
+    image: "{{ jellyfin_image_name }}:{{ jellyfin_image_version }}"
+    pull: true
+    volumes:
+      - "{{ jellyfin_config_directory }}:/config:rw"
+      - "{{ jellyfin_media_directory }}:/media:{{ jellyfin_media_permissions }}"
+
+    ports:
+      - "{{ jellyfin_port_http }}:8096"
+      - "{{ jellyfin_port_https }}:8920"
+    env:
+      TZ: "{{ timezone }}"
+      PUID: "{{ jellyfin_user_id }}"
+      PGID: "{{ jellyfin_group_id }}"
+    restart_policy: unless-stopped
+    memory: "{{ jellyfin_memory }}"
+    labels:
+      traefik.enable: "true"
+      traefik.http.routers.jellyfin.rule: "Host(`{{ jellyfin_hostname }}.{{ domain }}`)"
+      traefik.http.routers.jellyfin.tls.certresolver: "letsencrypt"
+      traefik.http.routers.jellyfin.tls.domains[0].main: "{{ domain }}"
+      traefik.http.routers.jellyfin.tls.domains[0].sans: "*.{{ domain }}"
+      traefik.http.services.jellyfin.loadbalancer.server.port: "8096"
+

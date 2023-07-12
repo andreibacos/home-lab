@@ -1,0 +1,31 @@
+---
+- name: Create Sonarr Directories
+  ansible.builtin.file:
+    path: "{{ item }}"
+    state: directory
+  with_items:
+    - "{{ sonarr_data_directory }}"
+
+- name: Sonarr
+  community.docker.docker_container:
+    name: "{{ sonarr_container_name }}"
+    image: "{{ sonarr_image_name }}:{{ sonarr_image_version }}"
+    pull: true
+    volumes:
+      - "{{ samba_shares_root }}:/data:rw"
+      - "{{ sonarr_data_directory }}:/config:rw"
+    ports:
+      - "{{ sonarr_port }}:8989"
+    env:
+      TZ: "{{ timezone }}"
+      PUID: "{{ sonarr_user_id }}"
+      PGID: "{{ sonarr_group_id }}"
+    restart_policy: unless-stopped
+    memory: "{{ sonarr_memory }}"
+    labels:
+      traefik.enable: "true"
+      traefik.http.routers.sonarr.rule: "Host(`{{ sonarr_hostname }}.{{ domain }}`)"
+      traefik.http.routers.sonarr.tls.certresolver: "letsencrypt"
+      traefik.http.routers.sonarr.tls.domains[0].main: "{{ domain }}"
+      traefik.http.routers.sonarr.tls.domains[0].sans: "*.{{ domain }}"
+      traefik.http.services.sonarr.loadbalancer.server.port: "8989"

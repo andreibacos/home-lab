@@ -1,0 +1,7 @@
+*.retry
+*.log
+.cache
+roles/bertvv.samba
+roles/geerlingguy.docker
+[._]sw[a-p]
+Session.vim

@@ -1,0 +1,5 @@
+[all]
+nas ansible_connection=local ansible_host=localhost
+
+[nas]
+nas

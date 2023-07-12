@@ -1,0 +1,59 @@
+---
+hostname: fry
+
+# apt
+keep_packages_updated: true
+extra_apt_packages:
+  - smartmontools
+  - htop
+  - zfsutils-linux
+  - bonnie++
+  - unzip
+  - lm-sensors
+  - ctop
+
+# user/group who owns the data
+nas_user: nas
+nas_group: nas
+
+# samba
+samba_shares_root: /data
+media_root: "{{ samba_shares_root }}/media"
+downloads_root: "{{ samba_shares_root }}/downloads"
+torrents_root: "{{ samba_shares_root }}/torrents"
+
+samba_server_string: NAS
+samba_mitigate_cve_2017_7494: false
+samba_apple_extensions: yes
+samba_guest_account: "{{ nas_user }}"
+samba_map_to_guest: Bad Password
+samba_netbios_name: "{{ hostname }}"
+samba_shares:
+  - name: media
+    guest_ok: yes
+    public: yes
+    writable: yes
+    browseable: yes
+    path: "{{ media_root }}"
+    owner: "{{ nas_user }}"
+    group: "{{ nas_user }}"
+  - name: downloads
+    guest_ok: yes
+    public: yes
+    writable: yes
+    browseable: yes
+    path: "{{ downloads_root }}"
+    owner: "{{ nas_user }}"
+    group: "{{ nas_user }}"
+
+# used by geerlingguy.pip
+pip_install_packages:
+  - name: docker
+
+# used by geerlingguy.docker
+docker_home: "/docker"
+docker_users:
+  - "{{ username }}"
+docker_daemon_options:
+  storage-driver: overlay2
+
