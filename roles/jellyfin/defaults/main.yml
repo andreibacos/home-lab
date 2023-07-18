@@ -21,4 +21,4 @@ jellyfin_image_name: "linuxserver/jellyfin"
 jellyfin_image_version: "latest"
 
 # specs
-jellyfin_memory: "1g"
+jellyfin_memory: "2g"

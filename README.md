@@ -35,7 +35,25 @@ data d3 /mnt/disk3/
 0 3 * * * snapraid scrub --plan 20 --older-than 10
 ```
 
-### 6. Run Ansible
+### 6. smartd.conf
+```
+/dev/sda -a -I 194 -W 4,45,55 -R 5  -s S/../.././04 -m email@domain
+/dev/sdb -a -I 194 -W 4,45,55 -R 5  -s S/../.././04 -m email@domain
+/dev/sdc -a -I 194 -W 4,45,55 -R 5  -s S/../.././04 -m email@domain
+/dev/sdd -a -I 194 -W 4,45,55 -R 5  -s S/../.././04 -m email@domain
+```
+
+### 7. ssmtp.conf
+```
+root=user@gmail
+mailhub=smtp.gmail.com:465
+FromLineOverride=YES
+AuthUser=user@gmail.com
+AuthPass=pass
+UseTLS=YES
+```
+
+### 8. Run Ansible
 ```
 sudo apt install ansible
 ansible-galaxy install -r requirements.yml
