@@ -17,3 +17,4 @@ radarr_image_version: "latest"
 
 # specs
 radarr_memory: 1g
+radarr_whitelist_ips: 0.0.0.0/0

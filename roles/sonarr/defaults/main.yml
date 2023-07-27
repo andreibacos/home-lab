@@ -17,3 +17,4 @@ sonarr_image_version: "latest"
 
 # specs
 sonarr_memory: 1g
+sonarr_whitelist_ips: 0.0.0.0/0

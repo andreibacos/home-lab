@@ -29,3 +29,5 @@
       traefik.http.routers.sonarr.tls.domains[0].main: "{{ domain }}"
       traefik.http.routers.sonarr.tls.domains[0].sans: "*.{{ domain }}"
       traefik.http.services.sonarr.loadbalancer.server.port: "8989"
+      traefik.http.routers.sonarr.middlewares: "sonarr_whitelist_middleware@docker"
+      traefik.http.middlewares.sonarr_whitelist_middleware.ipwhitelist.sourcerange: "{{ sonarr_whitelist_ips }}"

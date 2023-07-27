@@ -14,3 +14,4 @@ jackett_image_version: "latest"
 
 # specs
 jackett_memory: "1g"
+jackett_whitelist_ips: 0.0.0.0/0

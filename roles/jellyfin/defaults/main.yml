@@ -22,3 +22,4 @@ jellyfin_image_version: "latest"
 
 # specs
 jellyfin_memory: "2g"
+jellyfin_whitelist_ips: 0.0.0.0/0

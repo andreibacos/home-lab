@@ -29,3 +29,5 @@
       traefik.http.routers.bazarr.tls.domains[0].main: "{{ domain }}"
       traefik.http.routers.bazarr.tls.domains[0].sans: "*.{{ domain }}"
       traefik.http.services.bazarr.loadbalancer.server.port: "6767"
+      traefik.http.routers.bazarr.middlewares: "bazarr_whitelist_middleware@docker"
+      traefik.http.middlewares.bazarr_whitelist_middleware.ipwhitelist.sourcerange: "{{ bazarr_whitelist_ips }}"

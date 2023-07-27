@@ -15,7 +15,8 @@
     volumes:
       - "{{ jellyfin_config_directory }}:/config:rw"
       - "{{ jellyfin_media_directory }}:/media:{{ jellyfin_media_permissions }}"
-
+    devices:
+      - /dev/dri:/dev/dri
     ports:
       - "{{ jellyfin_port_http }}:8096"
       - "{{ jellyfin_port_https }}:8920"
@@ -32,4 +33,5 @@
       traefik.http.routers.jellyfin.tls.domains[0].main: "{{ domain }}"
       traefik.http.routers.jellyfin.tls.domains[0].sans: "*.{{ domain }}"
       traefik.http.services.jellyfin.loadbalancer.server.port: "8096"
-
+      traefik.http.routers.jellyfin.middlewares: "jellyfin_whitelist_middleware@docker"
+      traefik.http.middlewares.jellyfin_whitelist_middleware.ipwhitelist.sourcerange: "{{ jellyfin_whitelist_ips }}"

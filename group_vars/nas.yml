@@ -57,3 +57,10 @@ docker_users:
 docker_daemon_options:
   storage-driver: overlay2
 
+local_net: "192.168.0.0/24, 172.17.0.1/16"
+bazarr_whitelist_ips: "{{ local_net }}"
+deluge_whitelist_ips: "{{ local_net }}"
+jackett_whitelist_ips: "{{ local_net }}"
+jellyfin_whitelist_ips: "{{ local_net }}"
+radarr_whitelist_ips: "{{ local_net }}"
+sonarr_whitelist_ips: "{{ local_net }}"

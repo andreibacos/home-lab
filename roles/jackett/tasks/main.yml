@@ -27,3 +27,5 @@
       traefik.http.routers.jackett.tls.domains[0].main: "{{ domain }}"
       traefik.http.routers.jackett.tls.domains[0].sans: "*.{{ domain }}"
       traefik.http.services.jackett.loadbalancer.server.port: "9117"
+      traefik.http.routers.jackett.middlewares: "jackett_whitelist_middleware@docker"
+      traefik.http.middlewares.jackett_whitelist_middleware.ipwhitelist.sourcerange: "{{ jackett_whitelist_ips }}"
