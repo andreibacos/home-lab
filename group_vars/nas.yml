@@ -50,17 +50,9 @@ samba_shares:
 pip_install_packages:
   - name: docker
 
-# used by geerlingguy.docker
-docker_home: "/docker"
-docker_users:
-  - "{{ username }}"
-docker_daemon_options:
-  storage-driver: overlay2
-
-local_net: "192.168.0.0/24, 172.17.0.1/16"
 bazarr_whitelist_ips: "{{ local_net }}"
 deluge_whitelist_ips: "{{ local_net }}"
 jackett_whitelist_ips: "{{ local_net }}"
-jellyfin_whitelist_ips: "{{ local_net }}"
+jellyfin_whitelist_ips: "0.0.0.0/0"
 radarr_whitelist_ips: "{{ local_net }}"
 sonarr_whitelist_ips: "{{ local_net }}"

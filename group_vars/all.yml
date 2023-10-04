@@ -27,3 +27,12 @@ cloudflare_token: !vault |
 
 traefik_environment_variables:
   CF_DNS_API_TOKEN: "{{ cloudflare_token }}"
+
+# used by geerlingguy.docker
+docker_home: "/docker"
+docker_users:
+  - "{{ username }}"
+docker_daemon_options:
+  storage-driver: overlay2
+
+local_net: "192.168.0.0/24, 172.17.0.1/16"

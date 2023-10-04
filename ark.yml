@@ -1,0 +1,55 @@
+- name: ARK Servers
+  hosts: nas
+  vars:
+    ark_default_max_players: "30"
+    ark_mods: "731604991,1210379301,864890773"
+    ark_password: ""
+    ark_admin_password: !vault |
+          $ANSIBLE_VAULT;1.1;AES256
+          66633064323263346165623663323433343035626532373534663037653031383861633963666638
+          3461623465666662333632346562356239343561663964650a613866316336613237653936376566
+          39336365643063666466323639383563333130393262373438306666613861623833323664383336
+          6261346466636564630a353731616632653138353431386630373532366431303938353430393232
+          3862
+
+    gus_ini:
+      AdminLogging: "true"
+      ShowMapPlayerLocation: "true"
+
+    game_ini:
+      bDisableStructurePlacementCollision : "true"
+      bAllowUnlimitedRespecs: "true"
+
+    main_cfg: |
+      arkopt_clusterid=c1
+      arkopt_ClusterDirOverride="/app/cluster"
+      arkflag_NoTransferFromFiltering=""
+      arkflag_exclusivejoin=""
+
+    exclusive_join: !vault |
+          $ANSIBLE_VAULT;1.1;AES256
+          37613431323831643365353135326564616238373266363066306139346636623532393966613464
+          3763613135376434626261303533333138653537343635310a336230623930373834613462356663
+          37373334326237306462336566623137336631633237366561666661353832363935353331363130
+          6366393339633730380a666435326231326636356462313238643732666262336533666666616137
+          38343366393138316636336633383865366438663261393837666536353861363731363265383363
+          61353636623136373864663961656363643864346364636535623064356234666531373434613131
+          656664393364656664313066343861616334
+
+  roles:
+    - role: ark
+      ark_container_name: "ark_island"
+      ark_session_name: "[Zog ARK] Island"
+      ark_map: "TheIsland"
+      ark_query_port: "49001"
+      ark_game_port: "49101"
+      ark_rcon_port: "49201"
+
+    - role: ark
+      ark_container_name: "ark_scorched_earth"
+      ark_session_name: "[Zog ARK] Scorched Earth"
+      ark_map: "ScorchedEarth_P"
+      ark_query_port: "49002"
+      ark_game_port: "49103"
+      ark_rcon_port: "49202"
+
