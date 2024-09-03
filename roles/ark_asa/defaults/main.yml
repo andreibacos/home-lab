@@ -1,0 +1,32 @@
+---
+ark_max_players: "30"
+ark_mods: ""
+ark_admin_password: "LeAdminPWD"
+
+ark_container_name: "ark_asa_island"
+ark_session_name: "Test ark asa island"
+ark_map: "TheIsland_WP"
+ark_game_port: "7777"
+ark_rcon_port: "28015"
+
+gus_ini:
+  AdminLogging: "true"
+  ShowMapPlayerLocation: "true"
+
+game_ini:
+  bDisableStructurePlacementCollision : "true"
+  bAllowUnlimitedRespecs: "true"
+ 
+# exclusive_join: |
+  # 7650000009904234324
+  # 7650000009902342342
+
+
+ark_data_directory: "{{ docker_home }}/ark_asa"
+
+# uid/gid
+ark_user_id: "0"
+ark_group_id: "0"
+
+# specs
+ark_memory: 12g

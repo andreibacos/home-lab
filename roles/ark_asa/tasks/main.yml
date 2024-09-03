@@ -1,0 +1,83 @@
+---
+- name: Create ARK Directories
+  ansible.builtin.file:
+    path: "{{ item }}"
+    state: directory
+    owner: "{{ username }}"
+    group: "{{ username }}"
+    mode: '0755'
+  with_items:
+    - "{{ ark_data_directory }}/{{ ark_container_name }}"
+    - "{{ ark_data_directory }}/cluster"
+    - "{{ ark_data_directory }}/{{ ark_container_name }}/ShooterGame/Saved/Config/WindowsServer"
+    - "{{ ark_data_directory }}/{{ ark_container_name }}/ShooterGame/Binaries/Win64"
+
+- name: Copy config Game.ini and GameUserSettings.ini files
+  copy: 
+    src: "{{ item.src }}"
+    dest: "{{ item.dest }}"
+    owner: "{{ username }}"
+    group: "{{ username }}"
+    mode: '0755'
+    force: no
+  loop:
+    - src: "templates/Game.ini"
+      dest: "{{ ark_data_directory }}/{{ ark_container_name }}/ShooterGame/Saved/Config/WindowsServer/Game.ini"
+    - src: "templates/GameUserSettings.ini"
+      dest: "{{ ark_data_directory }}/{{ ark_container_name }}/ShooterGame/Saved/Config/WindowsServer/GameUserSettings.ini"
+
+- name: Make GameUserSettings.ini changes
+  community.general.ini_file:
+    path: "{{ ark_data_directory }}/{{ ark_container_name }}/ShooterGame/Saved/Config/WindowsServer/GameUserSettings.ini"
+    section: ServerSettings
+    option: "{{ item.key }}"
+    value: "{{ item.value }}"
+    exclusive: false
+    no_extra_spaces: true
+  loop: "{{ gus_ini | dict2items }}"
+  register: gus_config
+
+- name: Make Game.ini changes
+  community.general.ini_file:
+    path: "{{ ark_data_directory }}/{{ ark_container_name }}/ShooterGame/Saved/Config/WindowsServer/Game.ini"
+    section: /script/shootergame.shootergamemode
+    option: "{{ item.key }}"
+    value: "{{ item.value }}"
+    no_extra_spaces: true
+  loop: "{{ game_ini | dict2items }}"
+  register: g_config
+
+- name: Configure exclusive join
+  ansible.builtin.blockinfile:
+    path: "{{ ark_data_directory }}/{{ ark_container_name }}/ShooterGame/Binaries/Win64/PlayersExclusiveJoinList.txt"
+    block: "{{ exclusive_join }}"
+    create: true
+  register: exclusive_cfg_config
+  when: exclusive_join is defined and exclusive_join | length > 0
+
+- name: ARK Container
+  community.docker.docker_container:
+    name: "asa_{{ ark_container_name }}"
+    image: zog/ark-asa-server
+    volumes:
+      - "{{ ark_data_directory }}/{{ ark_container_name }}:/home/steam/arkserver:rw"
+      - "{{ ark_data_directory }}/cluster:/home/steam/cluster:rw"
+    ports:
+      - "{{ ark_game_port }}:{{ ark_game_port }}/udp"
+      - "{{ ark_game_port|int + 1 }}:{{ ark_game_port|int + 1 }}/udp"
+      - "{{ ark_rcon_port }}:{{ ark_rcon_port }}/tcp"
+    env:
+      SESSION_NAME: "{{ ark_session_name }}"
+      CLUSTER_ID: "clstr1"
+      UPDATE_ON_START: "true"
+      MAP: "{{ ark_map }}"
+      ADMIN_PASSWORD: "{{ ark_admin_password }}"
+      MODS: "{{ ark_mods }}"
+      PORT: "{{ ark_game_port }}"
+      RCON_PORT: "{{ ark_rcon_port }}"
+      TZ: "{{ timezone }}"
+      PUID: "{{ ark_user_id }}"
+      PGID: "{{ ark_group_id }}"
+      CUSTOM_SERVER_ARGS: "{{ ark_extra_args }}"
+    restart_policy: unless-stopped
+    memory: "{{ ark_memory }}"

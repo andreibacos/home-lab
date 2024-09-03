@@ -1,0 +1,23 @@
+version: '2.4'
+
+services:
+  asaserver:
+    build: .
+    image: zog/ark-asa-server
+    container_name: asa_Server
+    restart: unless-stopped
+    environment:
+      - UPDATE_ON_START=false
+      - ENABLE_DEBUG=false
+      - MAP=TheIsland_WP
+      - PORT=7777
+      - RCON_PORT=27020
+      - ADMIN_PASSWORD=test
+      - CLUSTER_ID=c1
+      - CUSTOM_SERVER_ARGS=-NoBattlEye -NoTransferFromFiltering -noundermeshchecking -noundermeshkilling -ip=192.168.0.10  -ServerIP=192.168.0.10
+    ports:
+      - "7777:7777/udp"
+    volumes:
+      - "/docker/asa/island:/home/steam/arkserver"
+      - "/docker/asa/cluster:/home/steam/cluster"
+    mem_limit: 16G 
