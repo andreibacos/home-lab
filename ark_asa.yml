@@ -32,10 +32,18 @@
   roles:
     - role: ark_asa
       ark_container_name: "island"
-      ark_session_name: "[ZOG] Island"
+      ark_session_name: "[NRVX] Island"
       ark_map: "TheIsland_WP"
       ark_game_port: "7777"
       ark_mods: "928539,928621"
       ark_rcon_port: "{{ ark_game_port|int + 10000 }}"
       ark_extra_args: "-NoBattlEye -NoTransferFromFiltering -noundermeshchecking -noundermeshkilling -ip=192.168.0.10  -ServerIP=192.168.0.10"
 
+    - role: ark_asa
+      ark_container_name: "se"
+      ark_session_name: "[NRVX] SE"
+      ark_map: "ScorchedEarth_WP"
+      ark_game_port: "7787"
+      ark_mods: "928539,928621"
+      ark_rcon_port: "{{ ark_game_port|int + 10000 }}"
+      ark_extra_args: "-NoBattlEye -NoTransferFromFiltering -noundermeshchecking -noundermeshkilling -ip=192.168.0.10  -ServerIP=192.168.0.10"
