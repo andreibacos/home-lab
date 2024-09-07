@@ -40,7 +40,7 @@
 - name: Make Game.ini changes
   community.general.ini_file:
     path: "{{ ark_data_directory }}/{{ ark_container_name }}/ShooterGame/Saved/Config/WindowsServer/Game.ini"
-    section: /script/shootergame.shootergamemode
+    section: /Script/ShooterGame.ShooterGameMode
     option: "{{ item.key }}"
     value: "{{ item.value }}"
     no_extra_spaces: true
@@ -80,4 +80,5 @@
       PGID: "{{ ark_group_id }}"
       CUSTOM_SERVER_ARGS: "{{ ark_extra_args }}"
     restart_policy: unless-stopped
+    restart: "{{ gus_config.changed or g_config.changed or exclusive_cfg_config.changed }}"
     memory: "{{ ark_memory }}"

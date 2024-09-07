@@ -23,6 +23,8 @@ RUN set -ex; \
     apt-get clean; \
     rm -rf /var/lib/apt/lists/*
 
+RUN ln -s /home/steam/arkserver/rcon /usr/bin/rcon
+
 # Create the steam group and user 
 RUN set -ex; \
     groupadd -g ${PGID} steam && \

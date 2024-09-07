@@ -26,7 +26,13 @@ check_env_var SESSION_NAME "${SESSION_NAME-}"
 export STEAM_COMPAT_DATA_PATH="/home/steam/arkserver/steamapps/compatdata/2430930"
 export STEAM_COMPAT_CLIENT_INSTALL_PATH="/home/steam/Steam/"
 
-trap "/usr/local/bin/rcon-cli --port $RCON_PORT --password $ADMIN_PASSWORD saveworld" SIGTERM
+cat <<EOF > /home/steam/arkserver/rcon
+#!/bin/bash
+/usr/local/bin/rcon-cli --port $RCON_PORT --password $ADMIN_PASSWORD \$1
+EOF
+chmod +x /home/steam/arkserver/rcon
+
+trap "/usr/bin/rcon saveworld" SIGTERM SIGINT SIGQUIT SIGHUP ERR
 
 CLUSTER_DIR=/home/steam/cluster
 STEAM_DIR=/opt/steamcmd

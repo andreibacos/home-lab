@@ -14,10 +14,40 @@
     gus_ini:
       AdminLogging: "true"
       ShowMapPlayerLocation: "true"
+      HarvestAmountMultiplier: 5
+      XPMultiplier: 5
+      OverrideOfficialDifficulty: 5
+      OxygenSwimSpeedStatMultiplier: 1
+      ItemStackSizeMultiplier: 5
 
     game_ini:
-      bDisableStructurePlacementCollision : "true"
-      bAllowUnlimitedRespecs: "true"
+      BabyImprintingStatScaleMultiplier: 1.5
+      BabyCuddleIntervalMultiplier: 0.2
+      BabyCuddleGracePeriodMultiplier: 10
+      BabyCuddleLoseImprintQualitySpeedMultiplier: 1
+      PerLevelStatsMultiplier_DinoTamed[0]: 1
+      PerLevelStatsMultiplier_DinoTamed[1]: 2
+      PerLevelStatsMultiplier_DinoTamed[8]: 1
+      PerLevelStatsMultiplier_DinoTamed[7]: 20
+      PerLevelStatsMultiplier_Player[0]: 1
+      PerLevelStatsMultiplier_Player[7]: 100
+      PerLevelStatsMultiplier_Player[11]: 10
+      CropGrowthSpeedMultiplier: 2
+      LayEggIntervalMultiplier: 2
+      MatingIntervalMultiplier: 1
+      EggHatchSpeedMultiplier: 10
+      BabyMatureSpeedMultiplier: 10
+      BabyFoodConsumptionSpeedMultiplier: 2
+      CustomRecipeEffectivenessMultiplier: 2
+      CustomRecipeSkillMultiplier: 2
+      bDisableStructurePlacementCollision: True
+      bAllowPlatformSaddleMultiFloors: True
+      bAllowUnlimitedRespecs: True
+      SupplyCrateLootQualityMultiplier: 1.5
+      FishingLootQualityMultiplier: 1.5
+      bAllowSpeedLeveling: True
+      bAllowFlyerSpeedLeveling: True
+      WildDinoCharacterFoodDrainMultiplier: 4
 
     exclusive_join: !vault |
           $ANSIBLE_VAULT;1.1;AES256
@@ -35,7 +65,17 @@
       ark_session_name: "[NRVX] Island"
       ark_map: "TheIsland_WP"
       ark_game_port: "7777"
-      ark_mods: "928539,928621"
+      # 932331 https://legacy.curseforge.com/ark-survival-ascended/mods/binoculars
+      # 929118 https://legacy.curseforge.com/ark-survival-ascended/mods/magic-treat
+      # 928708 https://legacy.curseforge.com/ark-survival-ascended/mods/custom-dino-levels
+      # 928621 https://legacy.curseforge.com/ark-survival-ascended/mods/utilities-plus
+      # 928501 https://legacy.curseforge.com/ark-survival-ascended/mods/solo-farm-mod
+      # 939228 https://www.curseforge.com/ark-survival-ascended/mods/qol
+      # 928793 https://legacy.curseforge.com/ark-survival-ascended/mods/cryopods
+      # 928539 https://legacy.curseforge.com/ark-survival-ascended/mods/appetizer-beta
+      # 957335 https://www.curseforge.com/ark-survival-ascended/mods/hidecryopods
+      # 930494 https://www.curseforge.com/ark-survival-ascended/mods/upgrade-station
+      ark_mods: "932331,929118,928708,928621,928501,939228,928793,928539,957335,930494"
       ark_rcon_port: "{{ ark_game_port|int + 10000 }}"
       ark_extra_args: "-NoBattlEye -NoTransferFromFiltering -noundermeshchecking -noundermeshkilling -ip=192.168.0.10  -ServerIP=192.168.0.10"
 
@@ -44,6 +84,15 @@
       ark_session_name: "[NRVX] SE"
       ark_map: "ScorchedEarth_WP"
       ark_game_port: "7787"
-      ark_mods: "928539,928621"
+      ark_mods: "932331,929118,928708,928621,928501,939228,928793,928539,957335,930494"
+      ark_rcon_port: "{{ ark_game_port|int + 10000 }}"
+      ark_extra_args: "-NoBattlEye -NoTransferFromFiltering -noundermeshchecking -noundermeshkilling -ip=192.168.0.10  -ServerIP=192.168.0.10"
+
+    - role: ark_asa
+      ark_container_name: "aberration"
+      ark_session_name: "[NRVX] Aberration"
+      ark_map: "Aberration_WP"
+      ark_game_port: "7797"
+      ark_mods: "932331,929118,928708,928621,928501,939228,928793,928539,957335,930494"
       ark_rcon_port: "{{ ark_game_port|int + 10000 }}"
       ark_extra_args: "-NoBattlEye -NoTransferFromFiltering -noundermeshchecking -noundermeshkilling -ip=192.168.0.10  -ServerIP=192.168.0.10"
